@@ -1,1 +1,88 @@
+# AtmoSync: Project Development Lifecycle — Week-by-Week Breakdown
 
+**Project Name:** AtmoSync – Real-Time Cargo Preservation & Arbitrage Analytics
+
+**Technology Stack:** Apache Kafka, Snowflake, dbt Core, Apache Superset, Docker, Python
+
+---
+
+### **Week 1: Architecture Design & Infrastructure Setup**
+
+* Defined the end-to-end streaming data architecture covering IoT simulation, message brokerage, data cloud warehousing, and BI serving layers.
+
+
+* Configured container orchestration using `docker-compose.yml` to spin up Apache Kafka, Zookeeper, and Apache Superset.
+
+
+* Implemented persistent Docker named volumes (`superset_home`) to preserve metadata, charts, and database credentials across container restarts.
+
+
+* Set up the Python virtual environment and installed core pipeline dependencies (`snowflake-connector-python`, `dbt-snowflake`, `kafka-python`).
+
+
+
+---
+
+### **Week 2: Streaming Ingestion & Snowflake Data Staging**
+
+* Developed the Python IoT simulator (`kafka_producer.py`) to generate multi-variable sensor payloads (container IDs, temperature readings, humidity percentages, and GPS coordinates).
+
+
+* Created the destination database structure in Snowflake (`ATMOSYNC_DB`) with a dedicated staging schema (`RAW`) and table `RAW_CONTAINER_TELEMETRY`.
+
+
+* Built the multi-threaded streaming consumer (`kafka_to_snowflake_consumer.py`) to consume Kafka topic messages and batch-load raw JSON payloads directly into Snowflake.
+
+
+* Verified end-to-end message delivery and connection handshakes using account parameters and security roles (`ibaayxn-vj30510`, `NOMESH16`, `ACCOUNTADMIN`).
+
+
+
+---
+
+### **Week 3: Data Transformation, Spoilage Modeling & Arbitrage Logic**
+
+* Initialized the dbt Core project structure (`atmosync_dbt`) and configured warehouse profiles connecting to Snowflake.
+
+
+* Built staging views to parse, clean, and cast raw JSON telemetry strings into structured analytical columns.
+
+
+* Developed core analytics models (`ANALYTICS.FCT_SPOILAGE_ARBITRAGE`) implementing thermal classification rules (`OPTIMAL`, `CRITICAL - HIGH SPOILAGE`).
+
+
+* Integrated cargo degradation algorithms and dynamic financial loss formulas calculating `SALVAGE_VALUE_PER_TON` and `ARBITRAGE_LOSS_PREVENTED` for recommended reroute markets.
+
+
+
+---
+
+### **Week 4: Superset BI Integration, Dashboard Assembly & Final Verification**
+
+* Installed the `snowflake-sqlalchemy` dialect inside the Superset container environment to establish connection handshakes.
+
+
+* Configured the production dataset `ATMOSYNC_DB.ANALYTICS.FCT_SPOILAGE_ARBITRAGE` in Superset.
+
+
+* Designed and built 4 analytical visualizations:
+
+
+* **Critical Spoilage Alerts** (Big Number KPI)
+
+
+* **Prevented Financial Loss** (Big Number with Trendline)
+
+
+* **Live Fleet Micro-Climate Map** (deck.gl Scatterplot with 25 km geospatial radius markers)
+
+
+* **Reroute & Arbitrage Decision Matrix** (Operational table sorted by maximum loss prevented)
+
+
+
+
+* Arranged the responsive 3-row dashboard layout (`AtmoSync - Cargo Preservation & Arbitrage Operations`) and configured 10–30 second auto-refresh intervals for real-time fleet operations.
+
+
+* Validated full lifecycle commands, container teardown steps, and generated complete operational runbook documentation.
